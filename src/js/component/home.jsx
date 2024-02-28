@@ -8,7 +8,7 @@ const Home = () => {
       const fetchTasks = async () => {
             try {
                 const response = await fetch(
-                    "https://assets.breatheco.de/apis/fake/todos/user/jimmyhaha"
+                    "https://assets.breatheco.de/apis/fake/todos/user/CarlosEscalanteM"
                 );
                 const body = await response.json();
                 setTasks(body);
@@ -29,7 +29,7 @@ const Home = () => {
     
         try {
             await fetch(
-                "https://assets.breatheco.de/apis/fake/todos/user/jimmyhaha", {
+                "https://assets.breatheco.de/apis/fake/todos/user/CarlosEscalanteM", {
                     method: "PUT",
                     body: JSON.stringify(updatedTasks),
                     headers: {
@@ -57,7 +57,7 @@ const Home = () => {
                     onChange={(e) => setNewTask(e.target.value)}
                 />
                 <button onClick={addTaskToApi}>
-                    Add Task
+                    Add a Task
                 </button>
             </h1>
         </div>
