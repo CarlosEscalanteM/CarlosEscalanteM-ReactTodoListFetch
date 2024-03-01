@@ -4,32 +4,50 @@ import React, { useState, useEffect } from 'react';
 const Home = () => {
     const [tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState("");
+    const createUser = async () => {
+        try {
+            const response = await fetch(
+                "https://playground.4geeks.com/apis/fake/todos/user/CarlosEscalanteM", {
+                    method: "POST",
+                    body: JSON.stringify([]),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+            const body = await response.json();
+            console.log(body)
+            setTasks(body);
+        } catch (error) {
+            alert(error);
+            }
+    };
     useEffect(() => {
       const fetchTasks = async () => {
             try {
                 const response = await fetch(
-                    "https://assets.breatheco.de/apis/fake/todos/user/CarlosEscalanteM"
+                    "https://playground.4geeks.com/apis/fake/todos/user/CarlosEscalanteM"
                 );
                 const body = await response.json();
+                console.log(body)
                 setTasks(body);
             } catch (error) {
                 alert(error);
+                createUser()
             }
         };
         fetchTasks();
     }, []); 
-    const addTaskToApi = async () => {
-        
+    const addTaskToApi = async () => {        
         const newTaskObject = {
             done: false,
             label: newTask
         };
     const updatedTasks = [...tasks, newTaskObject];
-        setTasks(updatedTasks);
-    
+        setTasks(updatedTasks);    
         try {
-            await fetch(
-                "https://assets.breatheco.de/apis/fake/todos/user/CarlosEscalanteM", {
+            await fetch (
+                "https://playground.4geeks.com/apis/fake/todos/user/CarlosEscalanteM", {
                     method: "PUT",
                     body: JSON.stringify(updatedTasks),
                     headers: {
@@ -38,18 +56,20 @@ const Home = () => {
                 }
             );
         } catch (error) {
-            alert(error);
+            alert (error);
         }
     };
     return (
         <div className='text-center'>
             <h1 className="text-center">
                 <ul>
-                    {tasks.map((task) => (
-                        <li key={task.id}>
-                            {task.label}
-                        </li>
-                    ))}
+                    {tasks.map((task) => {
+                        return (
+                            <li key={task.id}>
+                                {task.label}
+                            </li>
+                        );
+                    })}
                 </ul>
                 <input
                     type="text"
