@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-
 const Home = () => {
     const [tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState("");
+
     const createUser = async () => {
         try {
             const response = await fetch(
@@ -18,12 +18,14 @@ const Home = () => {
             const body = await response.json();
             console.log(body)
             setTasks(body);
-        } catch (error) {
+             }
+            catch (error) {
             alert(error);
-            }
+        }
     };
+
     useEffect(() => {
-      const fetchTasks = async () => {
+        const fetchTasks = async () => {
             try {
                 const response = await fetch(
                     "https://playground.4geeks.com/apis/fake/todos/user/CarlosEscalanteM"
@@ -38,12 +40,13 @@ const Home = () => {
         };
         fetchTasks();
     }, []); 
+
     const addTaskToApi = async () => {        
         const newTaskObject = {
             done: false,
             label: newTask
         };
-    const updatedTasks = [...tasks, newTaskObject];
+        const updatedTasks = [...tasks, newTaskObject];
         setTasks(updatedTasks);    
         try {
             await fetch (
@@ -59,6 +62,25 @@ const Home = () => {
             alert (error);
         }
     };
+
+    const deleteTaskFromApi = async (taskId) => {
+        const updatedTasks = tasks.filter(task => task.id !== taskId);
+        setTasks(updatedTasks);
+        try {
+            await fetch (
+                "https://playground.4geeks.com/apis/fake/todos/user/CarlosEscalanteM", {
+                    method: "DELETE",
+                    body: JSON.stringify(updatedTasks),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+        } catch (error) {
+            alert (error);
+        }
+    };
+
     return (
         <div className='text-center'>
             <h1 className="text-center">
@@ -67,6 +89,9 @@ const Home = () => {
                         return (
                             <li key={task.id}>
                                 {task.label}
+                                <button onClick={() => deleteTaskFromApi(task.id)}>
+                                    Delete Task
+                                </button>
                             </li>
                         );
                     })}
@@ -77,10 +102,11 @@ const Home = () => {
                     onChange={(e) => setNewTask(e.target.value)}
                 />
                 <button onClick={addTaskToApi}>
-                    Add a Task
+                    Add Task
                 </button>
             </h1>
         </div>
     );
 };
+
 export default Home;
